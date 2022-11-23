@@ -12,7 +12,7 @@ import {
 
 const INPUT_LENGTH = 2;
 
-let proofsEnabled = false;
+let proofsEnabled = true;
 function createLocalBlockchain() {
   const Local = Mina.LocalBlockchain({ proofsEnabled });
   Mina.setActiveInstance(Local);
@@ -99,7 +99,11 @@ describe('Vwap', () => {
       );
       zkAppInstance.calculate(prices, volumes);
     });
+
+    console.time('Proving');
     await txn.prove();
+    console.timeEnd('Proving');
+
     await txn.send();
 
     const updatedNum = zkAppInstance.output.get();
